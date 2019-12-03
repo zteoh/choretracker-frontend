@@ -1,33 +1,66 @@
 import React from 'react';
 import '../style/Chores.css';
+import NewChoreForm from './NewChoreForm';
+import { chores, addChore, toggleComplete, deleteChore } from "../api";
+
 
 class Chores extends React.Component {
 
+	// Constructor
 	state = { 
-		chores: [
-		{child: "Mark", task: "Sweep", due_on: "2018-04-09", completed: false},
-		{child: "Alex", task: "Sweep", due_on: "2018-04-09", completed: false},
-		{child: "Alex", task: "Clean", due_on: "2018-04-09", completed: false},
-		{child: "Jane", task: "Sweep", due_on: "2018-04-09", completed: false},
-		{child: "Mark", task: "Wash", due_on: "2018-04-09", completed: false},
-		{child: "Jane", task: "Sweep", due_on: "2018-04-09", completed: false},
-		{child: "Mark", task: "Garden", due_on: "2018-04-09", completed: false}]
-
+		showForm: false
 	}
 
-	showChores = () => {
-		return this.state.chores.map((chore, index) => {
+	// Lifecycle Methods
+	componentDidMount() {
+	}
+
+	// Methods
+	toggleForm = () => {
+		this.setState(prevState => ({
+			showForm: !prevState.showForm
+		}));
+	}
+
+	addChore = (newChore) => {
+		addChore(newChore)
+		this.toggleForm() // Hide the chore form after the chore is added
+	}
+
+	toggleComplete = (index) => {
+		toggleComplete(index)
+		this.forceUpdate()
+	}
+
+	deleteChore = (index) => {
+		deleteChore(index)
+		this.forceUpdate()
+	}
+
+	// Rendering Helper Methods
+	renderChores = () => {
+		return this.props.chores.map((chore, index) => {
 	        return (
 	        	<tr key={index} >
 	        	<td width="125" align="left">{chore.child}</td>
 	        	<td width="200" align="left">{chore.task}</td>
 	        	<td width="200" align="center">{chore.due_on}</td>
 	        	<td width="125" align="center">{chore.completed ? "True" : "False"}</td>
-	        	<td width="50">Check</td>
-	        	<td width="50">Delete</td>
+	        	<td width="50" onClick={() => this.toggleComplete(index)}>Check</td>
+	        	<td width="50" onClick={() => this.deleteChore(index)}>Delete</td>
 	        	</tr>
 	        	)
 	    })
+	}
+
+	renderForm = () => {
+		return (
+			<div>
+				<NewChoreForm 
+					onSubmit = { this.addChore }
+				/>
+			</div>
+		)
 	}
 
 	render() {
@@ -43,11 +76,13 @@ class Chores extends React.Component {
 						</tr>
 					</thead>
 					<tbody>
-							{ this.showChores() }
+							{ this.renderChores() }
 					</tbody>
 				</table>
 				
-				<button>New Chore</button>
+				<button onClick={this.toggleForm} >New Chore</button>
+
+				{ this.state.showForm ? this.renderForm() : null }
 
 			</div>
 		);
