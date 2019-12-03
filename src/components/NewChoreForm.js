@@ -1,9 +1,9 @@
 import React from "react"
-import PropTypes from "prop-types"
 import { children, tasks } from "../api";
 
 class NewChoreForm extends React.Component {
 
+	// Contructor
 	state = {
 		child: children ? children[0].first_name : null,
 		task: tasks ? tasks[0].name : null,
@@ -11,17 +11,30 @@ class NewChoreForm extends React.Component {
 		completed: false
 	}
 
-	handleChildChange = (event) => {
-		this.setState({child: event.target.value});
+	// Refactored Form Handling
+	handleInputChange = (event) => {
+		const target = event.target;
+		const name = target.name;
+		const value = target.value;
+
+		this.setState({
+		  [name]: value
+		});
 	}
 
-	handleTaskChange = (event) => {
-		this.setState({task: event.target.value});
-	}
+	// Basic Form Handling
 
-	handleDueOnChange = (event) => {
-		this.setState({due_on: event.target.value});
-	}
+	// handleChildChange = (event) => {
+	// 	this.setState({child: event.target.value});
+	// }
+
+	// handleTaskChange = (event) => {
+	// 	this.setState({task: event.target.value});
+	// }
+
+	// handleDueOnChange = (event) => {
+	// 	this.setState({due_on: event.target.value});
+	// }
 
 	onSubmit = () => {
 		const newChore = {
@@ -34,6 +47,7 @@ class NewChoreForm extends React.Component {
 		this.props.onSubmit(newChore);
 	}
 
+	// Render Helper Methods
 	renderChildrenOptions = () => {
 		return children.map((child, index) => {
 		    return (
@@ -54,26 +68,26 @@ class NewChoreForm extends React.Component {
 	render() {
 		return (
 	  		<div>
-			        <label>
-			          Child:
-			          <select onChange={this.handleChildChange}>
-			            { this.renderChildrenOptions() }
-			          </select>
-			        </label>
-			        <br />
+		        <label>
+		          Child:
+		          <select name="child" onChange={this.handleInputChange}>
+		            { this.renderChildrenOptions() }
+		          </select>
+		        </label>
+		        <br />
 
-			        <label>
-			          Task:
-			          <select onChange={this.handleTaskChange}>
-			            { this.renderTasksOptions() }
-			          </select>
-			        </label>
-			        <br />
+		        <label>
+		          Task:
+		          <select name="task" onChange={this.handleInputChange}>
+		            { this.renderTasksOptions() }
+		          </select>
+		        </label>
+		        <br />
 
-			        <input type="date" onChange={this.handleDueOnChange}/>
-			        <br />
-			        
-			        <button onClick={this.onSubmit}>Submit</button>
+		        <input type="date" name="due_on" onChange={this.handleInputChange}/>
+		        <br />
+		        
+		        <button onClick={this.onSubmit}>Submit</button>
 	      </div>
 	  	)
 	}

@@ -1,7 +1,8 @@
 import React from 'react';
-import '../style/Chores.css';
+import PropTypes from "prop-types"
 import NewChoreForm from './NewChoreForm';
-import { chores, addChore, toggleComplete, deleteChore } from "../api";
+import { addChore, toggleComplete, deleteChore } from "../api";
+import '../style/Chores.css';
 
 
 class Chores extends React.Component {
@@ -29,12 +30,12 @@ class Chores extends React.Component {
 
 	toggleComplete = (index) => {
 		toggleComplete(index)
-		this.forceUpdate()
+		this.forceUpdate() // "Refetch" data
 	}
 
 	deleteChore = (index) => {
 		deleteChore(index)
-		this.forceUpdate()
+		this.forceUpdate() // "Refetch" data
 	}
 
 	// Rendering Helper Methods
@@ -87,6 +88,11 @@ class Chores extends React.Component {
 			</div>
 		);
 	}
+}
+
+// Defining the type of the props
+Chores.propTypes = {
+	children: PropTypes.array.isRequired
 }
 
 export default Chores;
