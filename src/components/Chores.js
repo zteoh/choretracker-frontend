@@ -43,10 +43,10 @@ class Chores extends React.Component {
 		return this.props.chores.map((chore, index) => {
 	        return (
 	        	<tr key={index} >
-	        	<td width="125" align="left">{chore.child}</td>
-	        	<td width="200" align="left">{chore.task}</td>
-	        	<td width="200" align="center">{chore.due_on}</td>
-	        	<td width="125" align="center">{chore.completed ? "True" : "False"}</td>
+	        	<td width="125">{chore.child}</td>
+	        	<td width="200">{chore.task}</td>
+	        	<td width="200">{chore.due_on}</td>
+	        	<td width="125">{chore.completed ? "True" : "False"}</td>
 	        	<td width="50" onClick={() => this.toggleComplete(index)}>Check</td>
 	        	<td width="50" onClick={() => this.deleteChore(index)}>Delete</td>
 	        	</tr>
@@ -67,11 +67,12 @@ class Chores extends React.Component {
 	render() {
 		return (
 			<div className="chores">
+			<h1> Chore Tracker </h1>
 				<table>
 					<thead>
 						<tr>
-							<th width="125" align="left">Child</th>
-							<th width="200" align="left">Task</th>
+							<th width="125">Child</th>
+							<th width="200">Task</th>
 							<th width="75">Due on</th>
 							<th width="125">Completed</th>
 						</tr>
@@ -92,7 +93,7 @@ class Chores extends React.Component {
 
 // Defining the type of the props
 Chores.propTypes = {
-	children: PropTypes.array.isRequired
+	chores: PropTypes.array.isRequired
 }
 
 export default Chores;

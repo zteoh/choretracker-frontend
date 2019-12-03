@@ -1,5 +1,6 @@
 import React from "react"
 import { children, tasks } from "../api";
+import '../style/NewChoreForm.css';
 
 class NewChoreForm extends React.Component {
 
@@ -51,7 +52,7 @@ class NewChoreForm extends React.Component {
 	renderChildrenOptions = () => {
 		return children.map((child, index) => {
 		    return (
-		    	<option value={child.first_name}> {child.first_name} </option>
+		    	<option key={index} value={child.first_name}> {child.first_name} </option>
 		    )
 		})
 	}
@@ -60,33 +61,35 @@ class NewChoreForm extends React.Component {
 		return tasks.map((task, index) => {
 		    // return <li key={index}>Chore ID: {value.id}</li>
 		    return (
-		    	<option value={task.name}> {task.name} </option>
+		    	<option key={index} value={task.name}> {task.name} </option>
 		    )
 		})
 	}
 
 	render() {
 		return (
-	  		<div>
-		        <label>
-		          Child:
+	  		<div className="chore-form">
+	  			<h4>New Chore Form</h4>
+		        <div className="form-input">
+		          <span>Child: </span>
 		          <select name="child" onChange={this.handleInputChange}>
 		            { this.renderChildrenOptions() }
 		          </select>
-		        </label>
-		        <br />
+		        </div>
 
-		        <label>
-		          Task:
+		        <div className="form-input">
+		          <span>Task: </span>
 		          <select name="task" onChange={this.handleInputChange}>
 		            { this.renderTasksOptions() }
 		          </select>
-		        </label>
-		        <br />
+		        </div>
 
-		        <input type="date" name="due_on" onChange={this.handleInputChange}/>
-		        <br />
+		        <div className="form-input">
+		        	<span>Due on: </span>
+		        	<input type="date" name="due_on" onChange={this.handleInputChange}/>
+		        </div>
 		        
+		        <br />
 		        <button onClick={this.onSubmit}>Submit</button>
 	      </div>
 	  	)

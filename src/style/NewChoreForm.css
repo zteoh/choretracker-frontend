@@ -1,0 +1,10 @@
+.chore-form {
+	margin: 20px 0px;
+	border: 1px gainsboro solid;
+	padding: 10px 10px 30px;
+}
+
+.form-input span {
+	float: left;
+	width: 75px;
+}
