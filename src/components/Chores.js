@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from "prop-types"
 import NewChoreForm from './NewChoreForm';
-import { addChore, toggleComplete, deleteChore } from "../api";
+import { addChoreAPI, toggleCompleteAPI, deleteChoreAPI } from "../api";
 import '../style/Chores.css';
 
 
@@ -9,7 +9,8 @@ class Chores extends React.Component {
 
 	// Constructor
 	state = { 
-		showForm: false
+		showForm: false,
+		chores: this.props.chores
 	}
 
 	// Lifecycle Methods
@@ -23,24 +24,28 @@ class Chores extends React.Component {
 		}));
 	}
 
-	addChore = (newChore) => {
-		addChore(newChore)
+	addNewChore = (newChore) => {
+		this.setState(prevState => ({
+			chores: addChoreAPI(prevState.chores, newChore)
+		}));
 		this.toggleForm() // Hide the chore form after the chore is added
 	}
 
 	toggleComplete = (index) => {
-		toggleComplete(index)
-		this.forceUpdate() // "Refetch" data
+		this.setState(prevState => ({
+			chores: toggleCompleteAPI(prevState.chores, index)
+		}));
 	}
 
 	deleteChore = (index) => {
-		deleteChore(index)
-		this.forceUpdate() // "Refetch" data
+		this.setState(prevState => ({
+			chores: deleteChoreAPI(prevState.chores, index)
+		}));
 	}
 
 	// Rendering Helper Methods
 	renderChores = () => {
-		return this.props.chores.map((chore, index) => {
+		return this.state.chores.map((chore, index) => {
 	        return (
 	        	<tr key={index} >
 	        	<td width="125">{chore.child}</td>
@@ -52,16 +57,6 @@ class Chores extends React.Component {
 	        	</tr>
 	        	)
 	    })
-	}
-
-	renderForm = () => {
-		return (
-			<div>
-				<NewChoreForm 
-					onSubmit = { this.addChore }
-				/>
-			</div>
-		)
 	}
 
 	render() {
@@ -84,7 +79,8 @@ class Chores extends React.Component {
 				
 				<button onClick={this.toggleForm} >New Chore</button>
 
-				{ this.state.showForm ? this.renderForm() : null }
+				{ this.state.showForm && 
+					<NewChoreForm addNewChore={this.addNewChore} />}
 
 			</div>
 		);
