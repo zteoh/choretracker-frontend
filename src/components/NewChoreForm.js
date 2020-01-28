@@ -7,9 +7,9 @@ class NewChoreForm extends React.Component {
 	// Contructor
 	state = {
 		child: children ? children[0].first_name : null,
+		// TODO : Add other states
 		task: tasks ? tasks[0].name : null,
-		due_on: '',
-		completed: false
+		due_on: null,
 	}
 
 	// Refactored Form Handling
@@ -26,26 +26,30 @@ class NewChoreForm extends React.Component {
 	// Basic Form Handling
 
 	// handleChildChange = (event) => {
-	// 	this.setState({child: event.target.value});
+	// 	const selectedChild = event.target.value;
+	// 	this.setState({ child: selectedChild });
 	// }
 
 	// handleTaskChange = (event) => {
-	// 	this.setState({task: event.target.value});
+	// 	const selectedTask = event.target.value;
+	// 	this.setState({ task: selectedTask });
 	// }
 
 	// handleDueOnChange = (event) => {
-	// 	this.setState({due_on: event.target.value});
+	// 	const selectedDate = event.target.value;
+	// 	this.setState({ due_on: selectedDate });
 	// }
 
-	onSubmit = () => {
+	submitChoreForm = () => {
+		// TODO : create a newChore and pass it to this.props.onSubmit
 		const newChore = {
 			child: this.state.child, 
 			task: this.state.task,
 			due_on: this.state.due_on, 
-			completed: this.state.completed
+			completed: false
 		}
 
-		this.props.onSubmit(newChore);
+		this.props.addNewChore(newChore);
 	}
 
 	// Render Helper Methods
@@ -59,7 +63,6 @@ class NewChoreForm extends React.Component {
 
 	renderTasksOptions = () => {
 		return tasks.map((task, index) => {
-		    // return <li key={index}>Chore ID: {value.id}</li>
 		    return (
 		    	<option key={index} value={task.name}> {task.name} </option>
 		    )
@@ -90,7 +93,7 @@ class NewChoreForm extends React.Component {
 		        </div>
 		        
 		        <br />
-		        <button onClick={this.onSubmit}>Submit</button>
+		        <button onClick={this.submitChoreForm}>Submit</button>
 	      </div>
 	  	)
 	}

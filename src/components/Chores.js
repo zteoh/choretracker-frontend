@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from "prop-types"
 import NewChoreForm from './NewChoreForm';
-import { addChore, toggleComplete, deleteChore } from "../api";
+import { addChoreAPI, toggleCompleteAPI, deleteChoreAPI } from "../api";
 import '../style/Chores.css';
 
 
@@ -9,7 +9,8 @@ class Chores extends React.Component {
 
 	// Constructor
 	state = { 
-		showForm: false
+		showForm: false,
+		chores: this.props.initialChores,
 	}
 
 	// Lifecycle Methods
@@ -23,24 +24,28 @@ class Chores extends React.Component {
 		}));
 	}
 
-	addChore = (newChore) => {
-		addChore(newChore)
+	addNewChore = (newChore) => {
+		const newChores = addChoreAPI(this.state.chores, newChore);
+
+		this.setState({ chores: newChores });
 		this.toggleForm() // Hide the chore form after the chore is added
 	}
 
 	toggleComplete = (index) => {
-		toggleComplete(index)
-		this.forceUpdate() // "Refetch" data
+		const newChores = toggleCompleteAPI(this.state.chores, index);
+
+		this.setState({ chores: newChores });
 	}
 
 	deleteChore = (index) => {
-		deleteChore(index)
-		this.forceUpdate() // "Refetch" data
+		const newChores = deleteChoreAPI(this.state.chores, index);
+
+		this.setState({ chores: newChores });
 	}
 
 	// Rendering Helper Methods
 	renderChores = () => {
-		return this.props.chores.map((chore, index) => {
+		return this.state.chores.map((chore, index) => {
 	        return (
 	        	<tr key={index} >
 	        	<td width="125">{chore.child}</td>
@@ -50,18 +55,8 @@ class Chores extends React.Component {
 	        	<td width="50" onClick={() => this.toggleComplete(index)}>Check</td>
 	        	<td width="50" onClick={() => this.deleteChore(index)}>Delete</td>
 	        	</tr>
-	        	)
+	        )
 	    })
-	}
-
-	renderForm = () => {
-		return (
-			<div>
-				<NewChoreForm 
-					onSubmit = { this.addChore }
-				/>
-			</div>
-		)
 	}
 
 	render() {
@@ -84,7 +79,8 @@ class Chores extends React.Component {
 				
 				<button onClick={this.toggleForm} >New Chore</button>
 
-				{ this.state.showForm ? this.renderForm() : null }
+				{ this.state.showForm && 
+					<NewChoreForm addNewChore={this.addNewChore} />}
 
 			</div>
 		);
