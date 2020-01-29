@@ -10,7 +10,11 @@ class Chores extends React.Component {
 	// Constructor
 	state = { 
 		showForm: false,
+<<<<<<< HEAD
 		chores: this.props.initialChores,
+=======
+		chores: this.props.chores
+>>>>>>> 0b2dc7915dab7b9b60c77db3501f6e74092f5775
 	}
 
 	// Lifecycle Methods
